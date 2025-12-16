@@ -2,81 +2,72 @@
 
 This project provides a minimal React template with a clean, modern UI and minimal dependencies.
 
-## Features
+## Todo App
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+This template now includes a simple Todo application with add, edit, delete, and completion toggle. It is built with React hooks and provides an env-aware API integration with a mock adapter fallback.
+
+### Features
+- Add new tasks (Enter key or button)
+- Toggle completion
+- Inline edit with Save/Cancel
+- Delete tasks
+- Loading and error states
+- Accessible labels and focus outlines
+- Centered, modern styling with theme colors:
+  - Primary #3b82f6, Success #06b6d4, Secondary #64748b, Background #f9fafb, Surface #ffffff, Error #EF4444
 
 ## Getting Started
 
 In the project directory, you can run:
 
 ### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in development mode.  
+Open http://localhost:3000 to view it in your browser.
 
 ### `npm test`
-
 Launches the test runner in interactive watch mode.
 
 ### `npm run build`
+Builds the app for production to the `build` folder.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environment and API Configuration
 
-## Customization
+The app selects the data source based on environment variables and feature flags:
 
-### Colors
+- Backend base URL is read from:
+  - `REACT_APP_API_BASE` or `REACT_APP_BACKEND_URL`
+- Feature flags (comma-separated) via:
+  - `REACT_APP_FEATURE_FLAGS`
+- If neither API variable is set or the feature flags include `USE_MOCK_API`, the app uses a localStorage-backed mock API.
 
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+Example `.env`:
+```
+REACT_APP_API_BASE='http://localhost:4000/api'
+REACT_APP_FEATURE_FLAGS=''
 ```
 
-### Components
+Or to force the mock adapter:
+```
+REACT_APP_API_BASE=''
+REACT_APP_FEATURE_FLAGS='USE_MOCK_API'
+```
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+See `.env.example` for a starting point.
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+### API Contract
+If using a backend, expected endpoints:
+- GET    {BASE}/todos
+- POST   {BASE}/todos            body: { text }
+- PUT    {BASE}/todos/:id        body: { text?, completed? }
+- DELETE {BASE}/todos/:id
 
-## Learn More
+## Accessibility Notes
+- Inputs and interactive elements have labels or aria-labels
+- Focus-visible outlines are provided
+- Live regions announce counts and loading
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Project Scripts (unchanged)
+The usual CRA scripts remain available.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Customization
+All styling resides in `src/App.css`. Adjust CSS variables to tweak the theme.
